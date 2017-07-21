@@ -20,6 +20,20 @@ class CategoriesController < ApplicationController
     end
   end
   
+  def edit
+    @category = Category.find(params[:id]) # First we have to find the category that we want to edit.
+  end
+  
+  def update # Remember, the edit form submission will be handled by the update action.
+    @category = Category.find(params[:id])
+    if @category.update(category_params) # We'll reuse the category_params method that we already have defined.
+      flash[:success] = "Category name was successfully updated"
+      redirect_to category_path(@category)
+    else
+      render 'edit'
+    end
+  end
+  
   def show
     @category = Category.find(params[:id])
     @category_articles = @category.articles.paginate(page: params[:page], per_page: 5)
